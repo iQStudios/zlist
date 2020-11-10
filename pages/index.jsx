@@ -206,7 +206,7 @@ export async function getStaticProps(context) {
     });
   });
 
-  if (_.isEmpty(storetData)) {
+  if (_.isEmpty(storeInfoRes)) {
     storetData.push({
       id: 1,
       name: "nome ristorante / negozio",
