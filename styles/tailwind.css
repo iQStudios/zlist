@@ -1,0 +1,11 @@
+/* purgecss start ignore */
+@import "tailwindcss/base";
+/* purgecss end ignore */
+
+@import "tailwindcss/components";
+
+.editable-row .ant-form-item-explain {
+  @apply absolute top-full;
+}
+
+@import "tailwindcss/utilities";
