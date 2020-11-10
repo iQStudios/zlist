@@ -29,7 +29,7 @@ export default function HomeIndex(props) {
         animate={{ x: 0, opacity: 1 }}
         initial={{ x: 200, opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-24 h-24  bg-contain bg-no-repeat bg-center mx-auto rounded-full"
+        className="w-auto h-24  bg-contain bg-no-repeat bg-center mx-auto"
         style={{
           backgroundImage: `url(${storeDati.logo_photo} )`,
         }}
