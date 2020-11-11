@@ -27,12 +27,11 @@ function newClient(dati) {
   return firestore.collection("covidListClient").add(dati);
 }
 
-const Home = ({ storetData, privacyData }) => {
+const Home = () => {
   const router = useRouter();
 
   const [storeInfo, setStoreInfo] = useState([]);
   const [privacy, setPrivacy] = useState([]);
-
   const [dati, setDati] = useState([]);
 
   const [validCheck, setValidCheck] = useState(false);
@@ -93,15 +92,26 @@ const Home = ({ storetData, privacyData }) => {
   useEffect(() => {
     const infoStore = () => {
       firestore.collection("info_store").onSnapshot((snapshot) => {
+        const dati = [];
         snapshot.forEach((doc) => {
+          dati.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+        if (_.isEmpty(dati)) {
           setStoreInfo([
             {
-              ...doc.data(),
-              id: doc.id,
+              id: 1,
+              name: "nome ristorante / negozio",
+              logo_photo: "./img/logo.png",
             },
           ]);
-        });
+        } else {
+          setStoreInfo(dati);
+        }
       });
+
       firestore.collection("privacy").onSnapshot((snapshot) => {
         snapshot.forEach((doc) => {
           setPrivacy([
@@ -113,24 +123,11 @@ const Home = ({ storetData, privacyData }) => {
         });
       });
     };
-    if (_.isEmpty(storeInfo)) {
-      return infoStore();
-    } else {
-      return setStoreInfo([
-        {
-          id: 1,
-          name: "nome ristorante / negozio",
-          logo_photo: "./img/logo.png",
-        },
-      ]);
-    }
+    return infoStore();
   }, []);
 
   return (
     <React.Fragment>
-      <Head>
-        <title>Welcome to {storeInfo.name}</title>
-      </Head>
       <Layout>
         <AnimatePresence exitBeforeEnter>
           {show &&
