@@ -30,8 +30,8 @@ function newClient(dati) {
 const Home = ({ storetData, privacyData }) => {
   const router = useRouter();
 
-  const [storeInfo, setStoreInfo] = useState([storetData[0]]);
-  const [privacy, setPrivacy] = useState(privacyData);
+  const [storeInfo, setStoreInfo] = useState([]);
+  const [privacy, setPrivacy] = useState([]);
 
   const [dati, setDati] = useState([]);
 
@@ -113,13 +113,23 @@ const Home = ({ storetData, privacyData }) => {
         });
       });
     };
-    return infoStore();
+    if (_.isEmpty(storeInfo)) {
+      return infoStore();
+    } else {
+      return setStoreInfo([
+        {
+          id: 1,
+          name: "nome ristorante / negozio",
+          logo_photo: "./img/logo.png",
+        },
+      ]);
+    }
   }, []);
 
   return (
     <React.Fragment>
       <Head>
-        <title>Welcome to {storeInfo[0].name}</title>
+        <title>Welcome to {storeInfo.name}</title>
       </Head>
       <Layout>
         <AnimatePresence exitBeforeEnter>
@@ -187,38 +197,4 @@ const Home = ({ storetData, privacyData }) => {
   );
 };
 
-export async function getStaticProps(context) {
-  const storetData = [];
-  const privacyData = [];
-
-  const storeInfoRes = await firestore.collection("info_store").get();
-  storeInfoRes.forEach((doc) => {
-    storetData.push({
-      ...doc.data(),
-      id: doc.id,
-    });
-  });
-  const privacyRes = await firestore.collection("privacy").get();
-  privacyRes.forEach((doc) => {
-    privacyData.push({
-      ...doc.data(),
-      id: doc.id,
-    });
-  });
-
-  if (_.isEmpty(storeInfoRes)) {
-    storetData.push({
-      id: 1,
-      name: "nome ristorante / negozio",
-      logo_photo: "./img/logo.png",
-    });
-  }
-
-  return {
-    props: {
-      storetData,
-      privacyData,
-    },
-  };
-}
 export default Home;
