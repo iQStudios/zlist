@@ -111,23 +111,29 @@ const Home = () => {
           setStoreInfo(dati);
         }
       });
+    };
 
+    const privacyDB = () => {
       firestore.collection("privacy").onSnapshot((snapshot) => {
+        const dati = [];
         snapshot.forEach((doc) => {
-          setPrivacy([
-            {
-              ...doc.data(),
-              id: doc.id,
-            },
-          ]);
+          dati.push({
+            ...doc.data(),
+            id: doc.id,
+          });
         });
+        setPrivacy(dati);
       });
     };
-    return infoStore();
+    privacyDB();
+    infoStore();
   }, []);
 
   return (
     <React.Fragment>
+      <Head>
+        <title>Welcome to </title>
+      </Head>
       <Layout>
         <AnimatePresence exitBeforeEnter>
           {show &&
